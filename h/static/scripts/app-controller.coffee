@@ -43,8 +43,17 @@ module.exports = class AppController
       applyUpdates(action, payload)
       $scope.$digest()
 
+    # App dialogs
+    $scope.accountDialog = visible: false
+    $scope.viaLinkDialog = visible: false
+    $scope.groupDialog = visible: false
+
     oncancel = ->
-      $scope.dialog.visible = false
+      $scope.accountDialog.visible = false
+
+    # Check to see if we are on the stream page.
+    if $window.top is $window
+      $scope.isStream = true
 
     cleanupAnnotations = ->
       # Clean up any annotations that need to be unloaded.
@@ -68,7 +77,7 @@ module.exports = class AppController
       if isFirstRun and not (newVal or oldVal)
         $scope.login()
       else
-        $scope.dialog.visible = false
+        $scope.accountDialog.visible = false
 
       # Update any edits in progress.
       for draft in drafts.all()
@@ -85,12 +94,12 @@ module.exports = class AppController
       $route.reload()
 
     $scope.login = ->
-      $scope.dialog.visible = true
+      $scope.accountDialog.visible = true
       identity.request {oncancel}
 
     $scope.logout = ->
       return unless drafts.discard()
-      $scope.dialog.visible = false
+      $scope.accountDialog.visible = false
       identity.logout()
 
     $scope.loadMore = (number) ->
@@ -99,8 +108,6 @@ module.exports = class AppController
     $scope.clearSelection = ->
       $scope.search.query = ''
       annotationUI.clearSelectedAnnotations()
-
-    $scope.dialog = visible: false
 
     $scope.search =
       query: $location.search()['q']

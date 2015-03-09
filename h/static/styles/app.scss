@@ -131,20 +131,19 @@ ol {
     border-radius: 2px;
   }
 
-  .dropdown-toggle {
-    .provider {
-      color: $gray-light;
-      display: none;
-    }
-    &:hover {
-      .provider {
-        display: inline;
-      }
-    }
-  }
-
   .dropdown.open .provider {
     display: inline;
+  }
+}
+
+.viewcontrol {
+  margin-right: 1em;
+  font-family: $sans-font-family;
+
+  &:after {
+    margin-left: 1.5em;
+    content: "/";
+    color: #777;
   }
 }
 

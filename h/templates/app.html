@@ -12,11 +12,13 @@
       <div class="dropdown pull-right user-picker">
         <span role="button"
               class="dropdown-toggle"
-              data-toggle="dropdown">{% raw %}{{ auth.user|persona }}{% endraw %}<!--
-          --><span class="provider" ng-show="auth.user">/{% raw %}{{ auth.user|persona:'provider' }}{% endraw %}</span><!--
-          --><i class="h-icon-arrow-drop-down"></i></span>
+              title="{% raw %}{{ auth.user|persona:'provider' }}{% endraw %}" 
+              data-toggle="dropdown">
+              {% raw %}{{ auth.user|persona }}{% endraw %}
+              <i class="h-icon-arrow-drop-down"></i>
+        </span>
         <ul class="dropdown-menu pull-right" role="menu">
-          <li ng-show="auth.user"><a href="" ng-click="dialog.visible='true'">Account</a></li>
+          <li ng-show="auth.user"><a href="" ng-click="accountDialog.visible='true'">Account</a></li>
           <li><a href="mailto:support@hypothes.is">Feedback</a></li>
           <li><a href="/docs/help" target="_blank">Help</a></li>
           <li ng-show="auth.user"><a href="/stream?q=user:{% raw %}{{ auth.user|persona }}{% endraw %}"
@@ -27,6 +29,18 @@
       <a class="pull-right" href=""
          ng-click="login()"
          ng-switch-when="null">Sign in</a>
+
+      <!-- Share this view -->
+      <span class="share-via-link">
+        <i class="h-icon-share"
+           title="Share this view"
+           ng-click="viaLinkDialog.visible = !viaLinkDialog.visible"></i>
+      </span>
+      <!-- / Share this view -->
+
+      <!-- View Control -->
+      <div class="dropdown pull-right viewcontrol"></div>
+      <!-- / View Control -->
 
       <!-- Searchbar -->
       <div class="simple-search"
@@ -40,13 +54,13 @@
 
   <!-- Wrapper -->
   <div id="wrapper" whenscrolled="loadMore(10)">
-    <!-- Dialog -->
-    <div class="content ng-cloak" ng-if="dialog.visible">
+    <!-- Account Dialog -->
+    <div class="content ng-cloak" ng-if="accountDialog.visible">
       <div id="dialog" class="sheet">
         <i class="close h-icon-close"
            role="button"
            title="Close"
-           ng-click="dialog.visible = false"></i>
+           ng-click="accountDialog.visible = false"></i>
         <div ng-if="auth.user">
           {% block settings %}
             <div class="tabbable"
@@ -66,7 +80,15 @@
         </div>
       </div>
     </div>
-    <!-- / Dialog -->
+    <!-- / Account Dialog -->
+
+    <!-- Share View Dialog -->
+    <div via-link-dialog="" ng-show="viaLinkDialog.visible"></div>
+    <!-- / Share View Dialog -->
+
+    <!-- Group Dialog -->
+    <div newgroupdialog="" ng-show="groupDialog.visible"></div>
+    <!-- / Group Dialog -->
 
     <!-- Angular view -->
     <main class="content" ng-view=""></main>
@@ -84,11 +106,20 @@
   <script type="text/ng-template" id="privacy.html">
     {{ include_raw("h:templates/client/privacy.html") }}
   </script>
+  <script type="text/ng-template" id="via_dialog.html">
+    {{ include_raw("h:templates/client/via_dialog.html") }}
+  </script>
   <script type="text/ng-template" id="viewer.html">
     {{ include_raw("h:templates/client/viewer.html") }}
   </script>
   <script type="text/ng-template" id="thread.html">
     {{ include_raw("h:templates/client/thread.html") }}
+  </script>
+  <script type="text/ng-template" id="viewcontrol.html">
+    {{ include_raw("h:templates/client/viewcontrol.html") }}
+  </script>
+  <script type="text/ng-template" id="newgroup_dialog.html">
+    {{ include_raw("h:templates/client/newgroup_dialog.html") }}
   </script>
 {% endblock %}
 

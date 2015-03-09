@@ -1,0 +1,16 @@
+<span role="button"
+      class="dropdown-toggle"
+      data-toggle="dropdown">
+      <i ng-class="socialview.icon"></i>
+      {{socialview.name}}
+      <i class="h-icon-arrow-drop-down" ng-show="auth.user"></i>
+</span>
+<ul class="dropdown-menu pull-right" role="menu" ng-show="auth.user">
+  <li ng-repeat="view in views"
+      ng-class="{selected: view.selected}"
+      ng-click="select(view)">
+    <i class="viewIcons" ng-class="view.icon"></i>
+    {{view.name}}
+  </li>
+  <li ng-click="groupDialog.visible = true"><i class="h-icon-add"></i> New Group</li>
+</ul>

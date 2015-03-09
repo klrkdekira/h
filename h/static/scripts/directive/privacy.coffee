@@ -1,20 +1,23 @@
-module.exports = ['localStorage', 'permissions', (localStorage, permissions) ->
+module.exports = ['localStorage', 'permissions', '$rootScope', (localStorage, permissions, $rootScope) ->
   VISIBILITY_KEY ='hypothesis.visibility'
-  VISIBILITY_PUBLIC = 'public'
-  VISIBILITY_PRIVATE = 'private'
+  VISIBILITY_PUBLIC = 'Public'
+  VISIBILITY_PRIVATE = 'Only Me'
+  viewnamelist = ['All', 'Public', 'Only Me']
 
-  levels = [
-    {name: VISIBILITY_PUBLIC, text: 'Public'}
-    {name: VISIBILITY_PRIVATE, text: 'Only Me'}
+  $rootScope.levels = [
+    {name: VISIBILITY_PUBLIC, text: 'Public', icon: 'h-icon-public'}
+    {name: VISIBILITY_PRIVATE, text: 'Only Me', icon: 'h-icon-lock'}
   ]
 
   getLevel = (name) ->
-    for level in levels
+    for level in $rootScope.levels
       if level.name == name
         return level
     undefined
 
   isPublic  = (level) -> level == VISIBILITY_PUBLIC
+
+  isPrivate  = (level) -> level == VISIBILITY_PRIVATE
 
   link: (scope, elem, attrs, controller) ->
     return unless controller?
@@ -30,10 +33,16 @@ module.exports = ['localStorage', 'permissions', (localStorage, permissions) ->
     controller.$parsers.push (privacy) ->
       return unless privacy?
 
-      if isPublic(privacy.name)
-        newPermissions = permissions.public()
+      if $rootScope.socialview.name != 'All'
+        if $rootScope.socialview.name == 'Only Me'
+          newPermissions = permissions.private()
+        else
+          newPermissions = permissions.public()
       else
-        newPermissions = permissions.private()
+        if isPrivate(privacy.name)
+          newPermissions = permissions.private()
+        else
+          newPermissions = permissions.public()
 
       # Cannot change the $modelValue into a new object
       # Just update its properties
@@ -44,19 +53,33 @@ module.exports = ['localStorage', 'permissions', (localStorage, permissions) ->
 
     controller.$render = ->
       unless controller.$modelValue.read?.length
-        name = localStorage.getItem VISIBILITY_KEY
-        name ?= VISIBILITY_PUBLIC
+        if $rootScope.socialview.name == 'All'
+          name = localStorage.getItem VISIBILITY_KEY
+          name ?= VISIBILITY_PUBLIC
+        else if $rootScope.socialview.name == 'Public'
+          name = VISIBILITY_PUBLIC
+        else if $rootScope.socialview.name == 'Only Me'
+          name = VISIBILITY_PRIVATE
+        else
+          name = $rootScope.socialview.name
         level = getLevel(name)
         controller.$setViewValue level
 
+      $rootScope.level = controller.$viewValue
       scope.level = controller.$viewValue
 
-    scope.levels = levels
+    scope.levels = $rootScope.levels
     scope.setLevel = (level) ->
       localStorage.setItem VISIBILITY_KEY, level.name
       controller.$setViewValue level
       controller.$render()
     scope.isPublic = isPublic
+    scope.isPrivate = isPrivate
+
+    for view in $rootScope.views
+      if view.name not in viewnamelist
+        viewnamelist.push view.name
+        $rootScope.levels.push {name: view.name, text: view.name, icon:'h-icon-group'}
 
   require: '?ngModel'
   restrict: 'E'

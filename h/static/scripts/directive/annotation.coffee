@@ -188,9 +188,13 @@ AnnotationController = [
       unless validate(@annotation)
         return flash.info('Please add text or a tag before publishing.')
 
+      if $scope.level.name != ('Public' or 'Only Me')
+        @annotation.tags.push { text:"group:" + $scope.level.text }
+
       # Update stored tags with the new tags of this annotation
       newTags = @annotation.tags.filter (tag) ->
         tag.text not in (model.tags or [])
+
       tags.store(newTags)
 
       switch @action
@@ -279,6 +283,12 @@ AnnotationController = [
       if @document.title.length > 30
         @document.title = @document.title[0..29] + '…'
 
+      for tag in model.tags
+        str = "group:"
+        re = new RegExp(str, "g");
+        if re.test(tag)
+          $scope.groupAnno = tag.substring(str.length, tag.length)
+
       # Form the tags for ngTagsInput.
       @annotation.tags = ({text} for text in (model.tags or []))
 
@@ -292,6 +302,11 @@ AnnotationController = [
         @showDiff ?= diffFlags.shouldShowDiff
       else
         @showDiff = undefined
+
+    $scope.filtertags = (tag) ->
+      str = "group:"
+      re = new RegExp(str, "g");
+      !re.test(tag.text)
 
     updateTimestamp = (repeat=false) =>
       @timestamp = time.toFuzzyString model.updated
@@ -310,6 +325,12 @@ AnnotationController = [
     $scope.$on '$destroy', ->
       updateTimestamp = angular.noop
       drafts.remove model
+
+    $scope.$watch (-> $rootScope.level), (level) =>
+      $scope.level = level
+
+    $scope.$watch (-> $rootScope.socialview), (socialview) =>
+      $scope.currentView = socialview
 
     # Watch the model.
     # XXX: TODO: don't clobber the view when collaborating

@@ -1,0 +1,70 @@
+<div id="dialog" class="sheet content">
+	<i class="close h-icon-close"
+   	   role="button"
+       title="Close"
+       ng-click="groupDialog.visible = false; showLink = false;"></i>
+    <div class="form-vertical tabbable">
+	    <div class="form tab-pane" data-title="New group">
+		    <div ng-hide="showLink">
+		    	<form name="newgroup"
+		    		  ng-submit="newgroup()"
+		    		  form-validate>
+		    		<div class="form-field">
+						<p class="form-description">Create a new group and annotate collaboratively.</p>
+						<input id="nameGroup"
+							   name="groupName" 
+							   class="form-input"
+						       type="text"
+							   ng-minlength="3"
+							   ng-maxlength="30"
+							   ng-model="groupName"></input>
+						<ul class="form-error-list">
+						    <li class="form-error" ng-show="newgroup.groupName.$error.required">Please enter your current password.</li>
+						    <li class="form-error" ng-show="newgroup.groupName.$error.minlength">The group name must be at least 3 characters.</li>
+						    <li class="form-error" ng-show="newgroup.groupName.$error.maxlength">Max group name length is 30 characters.</li>
+						</ul>
+			       	</div>
+			       	<div class="form-actions">
+				   		<div class="form-actions-buttons">
+				   			<button class="btn btn-primary" 
+				   					type="submit"
+               						status-button="newgroup">
+               						Create Group</button>		
+				   		</div>
+				    </div>
+			    </form>
+			</div>
+
+			<!-- Get the link -->
+	        <div class="form-field" ng-show="showLink">
+		        <p class="form-description">Give the link to anyone you would like to invite into the group.</p>
+		        <input id="copyLink"
+						class="form-input"
+						type="text"
+						ng-value="groupLink"
+						readonly></input>
+		       	<div class="form-actions">
+			   		<div class="form-actions-message">
+						<p class="share-links">
+							<a href="//twitter.com/intent/tweet?url={{groupLink}}"
+							   target="_blank"
+							   title="Tweet link"
+							   class="h-icon-twitter"></a>
+							<a href="//www.facebook.com/sharer/sharer.php?u={{groupLink}}"
+							   target="_blank"
+							   title="Share on Facebook"
+							   class="h-icon-facebook"></a>
+							<a href="//plus.google.com/share?url={{groupLink}}"
+							   target="_blank"
+							   title="Post on Google Plus"
+							   class="h-icon-google-plus"></a>
+							<a href="mailto:?subject=Let's%20Annotate&amp;body={{groupLink}}"
+							   title="Share via email"
+							   class="h-icon-mail"></a>
+						</p>
+			   		</div>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>

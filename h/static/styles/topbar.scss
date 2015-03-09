@@ -44,6 +44,7 @@ body {
     max-width: $break-tablet;
     padding: 0 4em;
     position: relative;
+    height: 30px;
 
     @include respond-to(wide-handhelds handhelds) {
       padding-left: 0;
