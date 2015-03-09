@@ -9,7 +9,7 @@
   @include clearfix;
   position: relative;
   padding: 0 1.5385em;
-  color: $gray;
+  color: $gray-darker;
 }
 
 .simple-search-form * {
@@ -23,14 +23,13 @@
 }
 
 :not(:focus) ~ .simple-search-icon {
-  color: $gray-lighter;
+  color: $gray-light;
 }
 
 input.simple-search-input {
   float: left;
   outline: none;
   color: $text-color;
-  width: 100%;
   border: none;
   padding: 0;
 

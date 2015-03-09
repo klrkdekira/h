@@ -12,7 +12,7 @@
 
   .masthead {
     margin-bottom: 2.5em;
-    margin-left: -1em;
+    margin-left: -2em;
   }
 }
 
@@ -86,7 +86,7 @@
 
   @include icons {
     @include help-icon;
-    font-size: 14px;
+    font-size: 10px;
   }
 }
 
@@ -96,7 +96,7 @@
   height: 45px;
   position: absolute;
   top: -10px;
-  right: -10px;
+  right: 0px;
 }
 
 .numbered-list {
