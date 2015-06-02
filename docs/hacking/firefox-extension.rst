@@ -17,7 +17,7 @@ To build the Firefox extension, use the ``hypothesis-buildext`` tool::
         chrome          build the Google Chrome extension
         firefox         build the Mozilla Firefox extension
 
-At this point, a working extension should exist in either ``./build/firefox``.
+At this point, a working extension should exist in ``./build/firefox``.
 If the development configuration was used, static assets are loaded from the
 server. Start the application and ensure that the assets are built by visiting
 the start page or by running the ``assets`` command::
