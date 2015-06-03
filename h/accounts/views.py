@@ -274,7 +274,6 @@ class ProfileController(object):
             if s is None:
                 return {
                     'errors': [{'subscriptions': _('Subscription not found')}],
-                    'code': 400
                 }
 
             # If we're trying to update a subscription for anyone other than
@@ -286,7 +285,6 @@ class ProfileController(object):
             if s.uri != self.request.authenticated_userid:
                 return {
                     'errors': [{'subscriptions': _('Subscription not found')}],
-                    'code': 400
                 }
 
             s.active = data.get('active', True)
