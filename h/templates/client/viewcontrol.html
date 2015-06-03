@@ -11,6 +11,11 @@
       ng-click="select(view)">
     <i class="viewIcons" ng-class="view.icon"></i>
     {{view.name}}
+    <a class="h-icon-cancel pull-right" style="margin: 0 -3px;" ng-show="view.editable && editgroups" ng-click="removeGroup(view)"></a>
+    <a class="h-icon-link pull-right" style="margin: 0 -3px;" ng-show="view.link" ng-click="showGroupLink(view)"></a>
   </li>
-  <li ng-click="groupDialog.visible = true"><i class="h-icon-add"></i> New Group</li>
+  <li>
+    <a ng-click="groupDialog.visible = true" style="margin-left:-7px;"><i class="h-icon-add"></i> New Group</a>
+  </li>
+<!--   <li><a class="" ng-click="toggleeditgroups($event)" style="margin-left:-7px;"><i class="h-icon-edit"></i> Edit Groups</a></li> -->
 </ul>

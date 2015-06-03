@@ -36,6 +36,10 @@ module.exports = ['localStorage', 'permissions', '$rootScope', (localStorage, pe
       if $rootScope.socialview.name != 'All'
         if $rootScope.socialview.name == 'Only Me'
           newPermissions = permissions.private()
+        else if scope.draft
+          console.log "Ran."
+          newPermissions = permissions.private()
+          $rootScope.draft = false
         else
           newPermissions = permissions.public()
       else
@@ -75,6 +79,8 @@ module.exports = ['localStorage', 'permissions', '$rootScope', (localStorage, pe
       controller.$render()
     scope.isPublic = isPublic
     scope.isPrivate = isPrivate
+    scope.$watch (-> $rootScope.draft), (draft) =>
+      scope.draft = draft
 
     for view in $rootScope.views
       if view.name not in viewnamelist

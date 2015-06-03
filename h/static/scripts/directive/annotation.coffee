@@ -182,7 +182,8 @@ AnnotationController = [
     # @name annotation.AnnotationController#save
     # @description Saves any edits and returns to the viewer.
     ###
-    this.save = ->
+    $scope.published = true
+    this.save = (published = true) ->
       unless model.user or model.deleted
         return flash.info('Please sign in to save your annotations.')
       unless validate(@annotation)
@@ -190,6 +191,19 @@ AnnotationController = [
 
       if $scope.level.name != ('Public' or 'Only Me')
         @annotation.tags.push { text:"group:" + $scope.level.text }
+
+      if published
+        $scope.published = true
+        keep = []
+        for tag in @annotation.tags
+          if tag.text == "group:draft"
+            continue
+          else
+            keep.push tag
+        @annotation.tags = keep
+      else
+        $scope.published = false
+        @annotation.tags.push { text:"group:draft"}
 
       # Update stored tags with the new tags of this annotation
       newTags = @annotation.tags.filter (tag) ->
@@ -286,7 +300,9 @@ AnnotationController = [
       for tag in model.tags
         str = "group:"
         re = new RegExp(str, "g");
-        if re.test(tag)
+        if tag == "group:draft"
+          $scope.published = false
+        else if re.test(tag)
           $scope.groupAnno = tag.substring(str.length, tag.length)
 
       # Form the tags for ngTagsInput.

@@ -105,23 +105,22 @@ module.exports = class WidgetController
         re2.test(container?.message?.tags)
     
     $rootScope.views = [
-        {name:'All', icon:'h-icon-public', selected:false}
-        {name:'Public', icon:'h-icon-public', selected:false}
-        {name:'Only Me', icon:'h-icon-lock', selected:false}
-        {name:'DEMOGROUP', icon:'h-icon-group', selected:true}
+        {name:'All', icon:'h-icon-public', selected:false, editable:false, link:false}
+        {name:'Public', icon:'h-icon-public', selected:false, editable:false, link:false}
+        {name:'Only Me', icon:'h-icon-lock', selected:false,  editable:false, link:false}
     ]
 
     if localStorage.getItem 'group1.name'
       groupname = localStorage.getItem 'group1.name'
       groupicon = localStorage.getItem 'group1.icon'
-      $rootScope.views.push {name:groupname, icon:groupicon, selected:false}
+      $rootScope.views.push {name:groupname, icon:groupicon, selected:false, editable:true, link:true}
     if localStorage.getItem 'group2.name'
       groupname2 = localStorage.getItem 'group2.name'
       groupicon2 = localStorage.getItem 'group2.icon'
-      $rootScope.views.push {name:groupname2, icon:groupicon2, selected:false}
+      $rootScope.views.push {name:groupname2, icon:groupicon2, selected:false, editable:true, link:true}
     if localStorage.getItem 'group3.name'
       groupname2 = localStorage.getItem 'group3.name'
       groupicon2 = localStorage.getItem 'group3.icon'
-      $rootScope.views.push {name:groupname2, icon:groupicon2, selected:false}
+      $rootScope.views.push {name:groupname2, icon:groupicon2, selected:false, editable:true, link:true}
 
-    $rootScope.socialview = $rootScope.views[3]
+    $rootScope.socialview = $rootScope.views[0]

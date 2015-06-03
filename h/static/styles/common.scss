@@ -253,6 +253,12 @@ html {
   }
 }
 
+.viewcontrol {
+  .dropdown-menu {
+    min-width: 225px;
+  }
+}
+
 //TABS////////////////////////////////
 .nav-tabs {
   margin-bottom: .7em;

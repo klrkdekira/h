@@ -4,7 +4,7 @@
        title="Close"
        ng-click="groupDialog.visible = false; showLink = false;"></i>
     <div class="form-vertical tabbable">
-	    <div class="form tab-pane" data-title="New group">
+	    <div class="form tab-pane" data-title="{{titleText}}">
 		    <div ng-hide="showLink">
 		    	<form name="newgroup"
 		    		  ng-submit="newgroup()"

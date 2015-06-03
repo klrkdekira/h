@@ -11,7 +11,9 @@
     <i class="h-icon-border-color" ng-show="vm.isHighlight() && !vm.editing"></i>
     <i class="h-icon-insert-comment" title="General comment" ng-show="vm.isComment()"></i>
     <i class="h-icon-lock" title="This annotation is visible only to you." ng-show="vm.isPrivate() && !vm.editing"></i>
-    <span class="small" ng-show="!vm.isPrivate() && !vm.editing">to&nbsp;<a ng-href="{{vm.baseURI}}/stream" target="_blank" class="annotation-timestamp" ng-show="!vm.isPrivate() && groupAnno && !vm.editing"><i class="h-icon-group" title="{{groupAnno}}"></i>{{groupAnno}}</a></span>
+    <span class="small" ng-show="!vm.isPrivate() && !vm.editing && published">to&nbsp;<a ng-href="{{vm.baseURI}}/stream" target="_blank" class="annotation-timestamp" ng-show="!vm.isPrivate() && groupAnno && !vm.editing"><i class="h-icon-group" title="{{groupAnno}}"></i>{{groupAnno}}</a></span>
+
+    <span class="small" ng-show="!published && !vm.editing"><i class="h-icon-lock"></i> Draft</span>
 
     <span class="small annotation-timestamp" ng-show="!vm.isPrivate() && !vm.editing && !groupAnno" style="margin-left:-3px"><i class="h-icon-public" title="Public annotation" ng-show="!vm.isPrivate() && !vm.editing && !groupAnno"></i> Public</span>
 
@@ -113,15 +115,18 @@
         ng-if="vm.editing"
         ng-switch="vm.action">
   <div class="form-actions-buttons form-actions-left">
-    <button ng-switch-when="edit"
+    <button ng-switch-when="edit || currentView.name == 'Only Me'"
             ng-click="vm.save()"
             class="btn"><i class="h-icon-check btn-icon"></i> Save</button>
     <button ng-switch-when="delete"
             ng-click="vm.save()"
             class="btn"><i class="h-icon-check btn-icon"></i> Delete</button>
     <button ng-switch-default
-            ng-click="vm.save()"
-            class="btn"><i class="h-icon-check btn-icon"></i> Save</button>
+            ng-click="vm.save(true)"
+            class="btn"><i class="h-icon-public btn-icon"></i> Publish</button>
+    <button ng-switch-default
+            ng-click="vm.save(false)"
+            class="btn btn-clean"><i class="h-icon-check btn-icon"></i> Save Draft</button>
     <button class="btn btn-clean"
             ng-click="vm.revert()"
             ><i class="h-icon-cancel btn-icon"></i> Cancel</button>
